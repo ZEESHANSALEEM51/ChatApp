@@ -177,8 +177,8 @@ const ChatContainer = () => {
       </div>
 
       {/* Input Area */}
-      <div className='flex-shrink-0 p-4 border-t border-gray-800/50 bg-gray-900/60'>
-        <form onSubmit={handleSendMessage} className='flex items-center gap-3'>
+      <div className='flex-shrink-0 p-4 border-t border-gray-800/50 bg-gray-900/60 pb-20 md:pb-4'>  {/* Added pb-20 for mobile */}
+    <form onSubmit={handleSendMessage} className='flex items-center gap-3'>
           <div className='flex-1 flex items-center bg-gray-800/70 border border-gray-700 rounded-2xl px-4 hover:border-purple-500/50 focus-within:border-purple-500 transition-all duration-200'>
             {/* File Upload */}
             <input 

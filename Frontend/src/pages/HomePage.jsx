@@ -10,14 +10,14 @@ const HomePage = () => {
 
     return (
         <div className='min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
-            {/* Decorative Background Elements - Fixed positioning */}
+            {/* Decorative Background Elements */}
             <div className='fixed inset-0 overflow-hidden pointer-events-none -z-10'>
                 <div className='absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl'></div>
                 <div className='absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl'></div>
                 <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-full blur-3xl'></div>
             </div>
 
-            {/* Main Container - FIXED: No outer padding causing overflow */}
+            {/* Main Container */}
             <div className='h-screen w-full overflow-hidden'>
                 {/* Header - Only show when no user selected on mobile */}
                 {!selectedUser && (
@@ -40,19 +40,19 @@ const HomePage = () => {
                     </div>
                 )}
 
-                {/* Chat Interface - FIXED: No outer div causing scroll */}
+                {/* Chat Interface */}
                 <div className={`h-full flex ${selectedUser ? 'max-md:flex-col' : ''} ${!selectedUser ? 'h-[calc(100vh-80px)] md:h-full' : 'h-full'}`}>
-                    {/* Sidebar - Always visible */}
+                    {/* Sidebar - Hidden when chat is open on mobile */}
                     <div className={`${selectedUser ? 'hidden md:block md:w-1/4 lg:w-1/5' : 'w-full md:w-1/3 lg:w-1/4'} h-full overflow-hidden`}>
                         <Sidebar />
                     </div>
 
-                    {/* Chat Container - Main Content */}
-                    <div className={`${selectedUser ? 'w-full md:w-2/4 lg:w-3/5' : 'hidden md:block md:w-2/3 lg:w-3/4'} h-full overflow-hidden`}>
+                    {/* Chat Container - Takes full width on mobile when user selected */}
+                    <div className={`${selectedUser ? 'w-full h-full' : 'hidden md:block md:w-2/3 lg:w-3/4'} h-full overflow-hidden`}>
                         <ChatContainer />
                     </div>
 
-                    {/* Right Sidebar - Only when user selected */}
+                    {/* Right Sidebar - Only when user selected on desktop */}
                     {selectedUser && (
                         <div className='hidden md:block md:w-1/4 lg:w-1/5 h-full overflow-hidden'>
                             <RightSidebar />
@@ -85,43 +85,55 @@ const HomePage = () => {
                     </div>
                 )}
 
-                {/* Bottom Navigation for Mobile */}
-                {selectedUser && (
+                {/* Bottom Navigation for Mobile - REMOVED WHEN CHAT IS OPEN */}
+                {/* We only show bottom nav when NO user is selected OR for quick actions */}
+                {!selectedUser ? (
                     <div className='md:hidden fixed bottom-4 left-4 right-4 z-40'>
                         <div className='bg-gray-900/90 backdrop-blur-lg border border-gray-800 rounded-xl p-2 shadow-2xl'>
                             <div className='flex items-center justify-around'>
-                                <button 
-                                    onClick={() => setShowRightSidebarMobile(true)}
-                                    className='flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-800 transition-colors'
-                                >
-                                    <div className='w-6 h-6 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 flex items-center justify-center'>
-                                        <span className='text-xs'>👤</span>
+                                <button className='flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-800 transition-colors'>
+                                    <div className='w-6 h-6 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center'>
+                                        <span className='text-xs'>💬</span>
                                     </div>
-                                    <span className='text-xs text-gray-300'>Profile</span>
+                                    <span className='text-xs text-gray-300'>Chats</span>
                                 </button>
                                 <button className='flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-800 transition-colors'>
                                     <div className='w-6 h-6 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 flex items-center justify-center'>
-                                        <span className='text-xs'>📞</span>
+                                        <span className='text-xs'>🔄</span>
                                     </div>
-                                    <span className='text-xs text-gray-300'>Call</span>
+                                    <span className='text-xs text-gray-300'>Status</span>
                                 </button>
                                 <button className='flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-800 transition-colors'>
                                     <div className='w-6 h-6 rounded-full bg-gradient-to-r from-green-600 to-emerald-600 flex items-center justify-center'>
-                                        <span className='text-xs'>📎</span>
+                                        <span className='text-xs'>📞</span>
                                     </div>
-                                    <span className='text-xs text-gray-300'>Attach</span>
+                                    <span className='text-xs text-gray-300'>Calls</span>
+                                </button>
+                                <button className='flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-800 transition-colors'>
+                                    <div className='w-6 h-6 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 flex items-center justify-center'>
+                                        <span className='text-xs'>⚙️</span>
+                                    </div>
+                                    <span className='text-xs text-gray-300'>Settings</span>
                                 </button>
                             </div>
                         </div>
                     </div>
+                ) : (
+                    // When chat is open, we show a simplified bottom action bar
+                    <div className='md:hidden fixed bottom-0 left-0 right-0 z-40'>
+                        {/* Spacer to prevent input field overlap - OPTIONAL: Can adjust based on your ChatContainer input height */}
+                        <div className='h-16'></div>
+                    </div>
                 )}
 
-                {/* New Message Button */}
-                <button className='fixed bottom-20 right-4 md:bottom-8 md:right-8 z-40 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center shadow-2xl hover:shadow-purple-500/25 hover:scale-105 active:scale-95 transition-all duration-200'>
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
-                </button>
+                {/* New Message Button - Hidden when chat is open on mobile */}
+                {!selectedUser && (
+                    <button className='fixed bottom-20 right-4 md:bottom-8 md:right-8 z-40 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center shadow-2xl hover:shadow-purple-500/25 hover:scale-105 active:scale-95 transition-all duration-200'>
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
+                )}
             </div>
         </div>
     )
